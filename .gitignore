@@ -1,0 +1,4 @@
+trading_sim
+*.o
+*.out
+.DS_Store
