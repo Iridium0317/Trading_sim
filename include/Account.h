@@ -3,11 +3,13 @@
 
 #include <string>
 #include <map>
+#include "OrderBook.h"
 
 class Account {
 private:
     double cash;
-    std::map<std::string, int> positions; // 持仓
+    std::map<std::string, int> positions;
+    OrderBook orderBook_;
 
 public:
     Account(double initCash);

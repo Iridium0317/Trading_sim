@@ -2,20 +2,28 @@
 #include "Account.h"
 using namespace std;
 
-Account::Account(double initCash) {
-    cash = initCash;
-}
+Account::Account(double initCash) : cash(initCash) {}
 
 void Account::buy(string id, double price) {
     int maxShares = (int)(cash / price);
-    cash -= maxShares * price;
-    positions[id] += maxShares;  // 
+    if (maxShares <= 0) return;
+
+    FillResult fill = orderBook_.fill(true, maxShares, price);
+    if (fill.qty > 0) {
+        cash -= fill.qty * fill.avg;
+        positions[id] += fill.qty;
+    }
 }
 
 void Account::sell(string id, double price) {
-    int qty = positions[id];     // 
-    cash += qty * price;
-    positions[id] = 0;
+    int qty = positions[id];
+    if (qty <= 0) return;
+
+    FillResult fill = orderBook_.fill(false, qty, price);
+    if (fill.qty > 0) {
+        cash += fill.qty * fill.avg;
+        positions[id] -= fill.qty;
+    }
 }
 
 double Account::getCash() { return cash; }

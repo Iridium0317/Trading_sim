@@ -2,6 +2,7 @@
 #define MARKET_H
 
 #include <vector>
+#include "Types.h"
 
 class Market {
 private:
